@@ -1,2 +1,0 @@
-# Flix
-Codepath Assignment One
