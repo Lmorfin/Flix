@@ -27,13 +27,12 @@ class ViewController: UIViewController, UITableViewDataSource,
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print("hi")
         
         //step 3
         tableView.dataSource = self
         tableView.delegate = self
         
-        //network node snippet
+        //network node snippet start
         let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
@@ -50,22 +49,15 @@ class ViewController: UIViewController, UITableViewDataSource,
                  
                  //reloads the data and keeps on calling the functions below (increments movies.count)
                  self.tableView.reloadData()
-                 
-                 print(dataDictionary)
-                 
-                 
-                 
                     // TODO: Get the array of movies
                  
                     // TODO: Store the movies in a property to use elsewhere
                     // TODO: Reload your table view data
 
-            
 
              }
         }
         task.resume()
-        
         //end network code snippet
 
     }
@@ -108,6 +100,29 @@ class ViewController: UIViewController, UITableViewDataSource,
         cell.posterView.af.setImage(withURL: posterURL!)
         
         return cell
+    }
+    
+    
+    //We are passing the movie in this function
+    //Details movie screen
+    override func prepare(for segue:
+    UIStoryboardSegue, sender: Any?) {
+        
+        //Find the selected movie
+        //sender is the cell that was tapped on
+        let cell = sender as! UITableViewCell
+        //tableView what is the index path for that cell
+        let indexPath = tableView.indexPath(for: cell)!
+        //accessing the array
+        let movie = movies[indexPath.row]
+        
+        
+        //pass the selected movie to the details view controller
+        let detailsViewController = segue.destination as! MovieDetailsViewController
+        detailsViewController.movie = movie
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
 
 }
